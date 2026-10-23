@@ -18,7 +18,7 @@ spec:
       serviceAccountName: cert-manager-webhook-cdnir
       containers:
         - name: cert-manager-webhook-cdnir
-          image: "cert-manager-webhook-cdnir:latest"
+          image: "ghcr.io/ahmz1833/cert-manager-webhook-cdnir:latest"
           imagePullPolicy: IfNotPresent
           args:
             - --tls-cert-file=/tls/tls.crt

@@ -5,7 +5,7 @@ certManager:
   serviceAccountName: cert-manager
 
 image:
-  repository: ghcr.io/community/cert-manager-webhook-cdnir
+  repository: ghcr.io/ahmz1833/cert-manager-webhook-cdnir
   tag: latest
   pullPolicy: IfNotPresent
 

@@ -56,3 +56,66 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "cert-manager-webhook-cdnir.fullname" . }}
     namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}:webhook-authentication-reader
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+  - apiGroup: ""
+    kind: ServiceAccount
+    name: {{ include "cert-manager-webhook-cdnir.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}:auth-delegator
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+  - apiGroup: ""
+    kind: ServiceAccount
+    name: {{ include "cert-manager-webhook-cdnir.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}:domain-solver
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+rules:
+  - apiGroups:
+      - {{ .Values.groupName | quote }}
+    resources:
+      - "*"
+    verbs:
+      - "create"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}:domain-solver
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}:domain-solver
+subjects:
+  - apiGroup: ""
+    kind: ServiceAccount
+    name: {{ .Values.certManager.serviceAccountName }}
+    namespace: {{ .Values.certManager.namespace }}
