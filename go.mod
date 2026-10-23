@@ -1,6 +1,6 @@
 module github.com/community/cert-manager-webhook-cdnir
 
-go 1.27.0
+go 1.23.0
 
 require (
 	github.com/cert-manager/cert-manager v1.15.3
