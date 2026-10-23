@@ -1,0 +1,52 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-selfsign
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-ca
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+spec:
+  secretName: {{ include "cert-manager-webhook-cdnir.fullname" . }}-ca
+  duration: 43800h # 5y
+  issuerRef:
+    name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-selfsign
+  isCA: true
+  commonName: "ca.cert-manager-webhook-cdnir.cert-manager"
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-ca
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+spec:
+  ca:
+    secretName: {{ include "cert-manager-webhook-cdnir.fullname" . }}-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-webhook-tls
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "cert-manager-webhook-cdnir.name" . }}
+spec:
+  secretName: {{ include "cert-manager-webhook-cdnir.fullname" . }}-webhook-tls
+  duration: 8760h # 1y
+  issuerRef:
+    name: {{ include "cert-manager-webhook-cdnir.fullname" . }}-ca
+  dnsNames:
+  - {{ include "cert-manager-webhook-cdnir.fullname" . }}
+  - {{ include "cert-manager-webhook-cdnir.fullname" . }}.{{ .Release.Namespace }}
+  - {{ include "cert-manager-webhook-cdnir.fullname" . }}.{{ .Release.Namespace }}.svc

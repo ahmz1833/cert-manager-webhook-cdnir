@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cert-manager-webhook-cdnir
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/name: cert-manager-webhook-cdnir
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app.kubernetes.io/name: cert-manager-webhook-cdnir

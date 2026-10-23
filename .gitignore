@@ -1,0 +1,20 @@
+# Binaries
+webhook
+*.exe
+*.test
+*.out
+
+# Environment variables & secrets
+.env*
+test-*.txt
+test_*.txt
+
+# Dependencies & vendor
+vendor/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store

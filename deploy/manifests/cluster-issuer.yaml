@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-cdnir
+spec:
+  acme:
+    email: admin@example.ir
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-cdnir-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.cdn.ir
+            solverName: cdnir-solver
+            config:
+              apiEndpoint: "https://bss.asiatech.cloud/api/v3"
+              apiTokenSecretRef:
+                name: cdnir-api-token
+                key: token

@@ -1,0 +1,13 @@
+apiVersion: v2
+name: cert-manager-webhook-cdnir
+description: A Helm chart for cert-manager-webhook-cdnir
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - cert-manager
+  - webhook
+  - cdnir
+  - asiatech
+  - acme
+  - dns01
