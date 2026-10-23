@@ -1,4 +1,4 @@
-module github.com/community/cert-manager-webhook-cdnir
+module github.com/ahmz1833/cert-manager-webhook-cdnir
 
 go 1.23.0
 
